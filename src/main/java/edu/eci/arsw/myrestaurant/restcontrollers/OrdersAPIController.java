@@ -25,7 +25,9 @@ import edu.eci.arsw.myrestaurant.services.RestaurantOrderServicesStub;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import org.apache.tomcat.util.json.JSONParser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +47,7 @@ public class OrdersAPIController {
     @GetMapping
     public ResponseEntity<?> getOrders(){
         try{
-            ArrayList<ArrayList<String>>  orderMap = services.getOrders();
+            ArrayList<ArrayList<Object>>  orderMap = services.getOrders();
             return new ResponseEntity<>(orderMap, HttpStatus.ACCEPTED);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);

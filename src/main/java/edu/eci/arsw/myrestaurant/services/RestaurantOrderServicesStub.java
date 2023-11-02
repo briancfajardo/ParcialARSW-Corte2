@@ -1,11 +1,15 @@
 package edu.eci.arsw.myrestaurant.services;
 
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import edu.eci.arsw.myrestaurant.beans.impl.BasicBillCalculator;
 import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.model.ProductType;
+
+import netscape.javascript.JSObject;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
@@ -84,10 +88,10 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
             return calc.calculateBill(tableOrders.get(tableNumber), productsMap);
         }
     }
-    public ArrayList<ArrayList<String>> getOrders() throws OrderServicesException {
-        ArrayList<ArrayList<String>>  totalOrders = new ArrayList<>();
+    public ArrayList<ArrayList<Object>> getOrders() throws OrderServicesException {
+        ArrayList<ArrayList<Object>>  totalOrders = new ArrayList<>();
         for(Integer order : tableOrders.keySet() ){
-            ArrayList<String> order2 = new ArrayList<>();
+            ArrayList<Object> order2 = new ArrayList<>();
             ArrayList<String> orderL = new ArrayList<>();
             //orderL.put(o, tableOrders.get(order).getOrderAmountsMap().get(o));
             for(String o : tableOrders.get(order).getOrderAmountsMap().keySet()){
@@ -95,7 +99,7 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
             }
             //orderL.addAll(tableOrders.get(order).getOrderAmountsMap().keySet());
             order2.add(""+order);
-            order2.add(orderL.toString());
+            order2.add(orderL);
             order2.add("Total: "+calculateTableBill(order));
             totalOrders.add(order2);
         }
