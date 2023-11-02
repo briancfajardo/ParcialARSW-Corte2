@@ -7,5 +7,7 @@ import java.util.Map;
 public interface BillCalculator {
 	
 	public int calculateBill(Order o,Map<String,RestaurantProduct> productsMap) ;
-	
+
+	//Map<Integer, Order>  getOrders();
+
 }

@@ -1,19 +1,24 @@
 package edu.eci.arsw.myrestaurant.services;
 
 
+import edu.eci.arsw.myrestaurant.beans.impl.BasicBillCalculator;
 import edu.eci.arsw.myrestaurant.model.Order;
 import edu.eci.arsw.myrestaurant.model.RestaurantProduct;
 import edu.eci.arsw.myrestaurant.beans.BillCalculator;
 import edu.eci.arsw.myrestaurant.model.ProductType;
+import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+@Service
 public class RestaurantOrderServicesStub implements RestaurantOrderServices {
 
     
-    BillCalculator calc = null;
+    BillCalculator calc = new BasicBillCalculator();
 
     public RestaurantOrderServicesStub() {
     }
@@ -79,7 +84,23 @@ public class RestaurantOrderServicesStub implements RestaurantOrderServices {
             return calc.calculateBill(tableOrders.get(tableNumber), productsMap);
         }
     }
-
+    public ArrayList<ArrayList<String>> getOrders() throws OrderServicesException {
+        ArrayList<ArrayList<String>>  totalOrders = new ArrayList<>();
+        for(Integer order : tableOrders.keySet() ){
+            ArrayList<String> order2 = new ArrayList<>();
+            ArrayList<String> orderL = new ArrayList<>();
+            //orderL.put(o, tableOrders.get(order).getOrderAmountsMap().get(o));
+            for(String o : tableOrders.get(order).getOrderAmountsMap().keySet()){
+                orderL.add(o+": "+tableOrders.get(order).getOrderAmountsMap().get(o));
+            }
+            //orderL.addAll(tableOrders.get(order).getOrderAmountsMap().keySet());
+            order2.add(""+order);
+            order2.add(orderL.toString());
+            order2.add("Total: "+calculateTableBill(order));
+            totalOrders.add(order2);
+        }
+        return totalOrders;
+    }
     private static final Map<String, RestaurantProduct> productsMap;
 
     private static final Map<Integer, Order> tableOrders;
